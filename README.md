@@ -1,7 +1,7 @@
 
 ## Sử dụng mạng học sâu trong không gian mở
 
-#Khóa luận tốt nghiệp
+# Khóa luận tốt nghiệp
 
 Giảng viên hướng dẫn : TS Mai Tiến Dũng
 
