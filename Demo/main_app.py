@@ -1,5 +1,5 @@
 import streamlit as st
-!pip install torch
+pip install torch
 import datetime
 import importlib
 import torch
