@@ -1,8 +1,7 @@
 import streamlit as st
-pip install torch
 import datetime
 import importlib
-import torch
+#import torch
 import cv2
 import numpy as np
 from io import BytesIO,StringIO,open
