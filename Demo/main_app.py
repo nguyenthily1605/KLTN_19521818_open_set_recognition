@@ -2,7 +2,7 @@ import streamlit as st
 import datetime
 import importlib
 import torch
-import cv2
+#import cv2
 import numpy as np
 from io import BytesIO,StringIO,open
 from PIL import Image
