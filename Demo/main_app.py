@@ -39,7 +39,7 @@ std = (0.2023, 0.1994, 0.2010)
 name=['deer','horse','truck','automobile']
 
 #MSP
-data_msp=pd.read_csv('.\\demo\\MSP_cifar10.csv')
+data_msp=pd.read_csv('MSP_cifar10.csv')
 fig_1_msp, ax_1_msp = plt.subplots()
 fig_2_msp, ax_2_msp = plt.subplots()
 fig_3_msp, ax_3_msp = plt.subplots()
