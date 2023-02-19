@@ -11,5 +11,4 @@ timm==0.4.12
 torch==1.9.0
 torchvision==0.10.0
 opencv-python== 4.5.2.52
-opencv-python-headless==4.5.3.56
-libgl1-mesa-glx==22.3.5
+
