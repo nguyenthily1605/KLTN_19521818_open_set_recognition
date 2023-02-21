@@ -149,7 +149,7 @@ if choice==' 	🖌️  Minh họa':
         if(uploaded_files1 is None):
             col1,col2=st.columns(2)
             with col1:
-                img=Image.open('../known.jpg')
+                img=Image.open('2.jpg')
                 st.image(img)
             with col2:
                 st.image(load_image('unknown.jpg'))
