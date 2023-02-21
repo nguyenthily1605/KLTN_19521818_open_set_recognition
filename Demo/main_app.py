@@ -66,18 +66,6 @@ def load_vid(path):
                     else:
                         vid.set(cv2.CAP_PROP_POS_FRAMES, 0)
                         continue
-#MSP AND MLS
-model_msp=load_model(path_file_model='weights_cifar.pth')
-model_msp.eval()
-
-#ARPL
-model_arpl=load_model('ARPL.pth')
-model_arpl.eval()
-Loss = importlib.import_module('Loss.'+options['loss'])
-criterion = getattr(Loss, options['loss'])(**options)
-criterion=criterion.cpu()
-criterion.load_state_dict(torch.load('ARPL_loss.pth',map_location=torch.device('cpu')))
-
 
 # Tieu de
 def Minh_hoa(uploaded_files,threshold_msp):
@@ -167,7 +155,7 @@ if choice==' 	🖌️  Minh họa':
             index_max=0
             vid_known=''
             img=st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
-            Minh_hoa(uploaded_files=uploaded_files1,threshold_msp=msp)
+            #Minh_hoa(uploaded_files=uploaded_files1,threshold_msp=msp)
 
         
 
