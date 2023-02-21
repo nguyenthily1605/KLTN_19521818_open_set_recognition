@@ -48,7 +48,7 @@ test_transform = transforms.Compose([
 def load_model(path_file_model=''):
   model=classifier32(num_classes=4)
   model = nn.DataParallel(model).cpu()
-  pretrain=torch.load(path_file_model,map_location=torch.device('cpu'))
+  pretrain=torch.load('https://github.com/nguyenthily1605/KLTN_19521818_open_set_recognition/blob/main/Demo/weights_cifar.pth',map_location=torch.device('cpu'))
   model.load_state_dict(pretrain)
   return model
 def load_image(image_file):
@@ -66,11 +66,11 @@ def load_vid(path):
                         vid.set(cv2.CAP_PROP_POS_FRAMES, 0)
                         continue
 #MSP AND MLS
-model_msp=load_model(path_file_model='https://github.com/nguyenthily1605/KLTN_19521818_open_set_recognition/blob/main/Demo/weights_cifar.pth')
+model_msp=load_model()
 model_msp.eval()
 
 #ARPL
-model_arpl=load_model('ARPL.pth')
+model_arpl=load_model()
 model_arpl.eval()
 Loss = importlib.import_module('Loss.'+options['loss'])
 criterion = getattr(Loss, options['loss'])(**options)
