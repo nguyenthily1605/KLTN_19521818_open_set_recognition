@@ -66,7 +66,7 @@ def load_vid(path):
                         vid.set(cv2.CAP_PROP_POS_FRAMES, 0)
                         continue
 #MSP AND MLS
-model_msp=load_model(path_file_model='weights_cifar.pth')
+model_msp=load_model(path_file_model='https://github.com/nguyenthily1605/KLTN_19521818_open_set_recognition/blob/main/Demo/weights_cifar.pth')
 model_msp.eval()
 
 #ARPL
