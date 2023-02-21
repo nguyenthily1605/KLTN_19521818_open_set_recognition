@@ -39,51 +39,6 @@ mean = (0.4914, 0.4822, 0.4465)
 std = (0.2023, 0.1994, 0.2010)
 name=['deer','horse','truck','automobile']
 
-#MSP
-data_msp=pd.read_csv('https://github.com/nguyenthily1605/KLTN_19521818_open_set_recognition/blob/main/Demo/MLS_cifar10.csv' , sep='you_delimiter', header=None)
-fig_1_msp, ax_1_msp = plt.subplots()
-fig_2_msp, ax_2_msp = plt.subplots()
-fig_3_msp, ax_3_msp = plt.subplots()
-ax_1_msp.set_xlabel('Epoch')
-ax_1_msp.set_ylabel('Acuracy(Closed Set Performance)')
-ax_1_msp.plot( 'epoch', 'acuracy', data=data_msp)
-ax_2_msp.set_xlabel('Epoch')
-ax_2_msp.set_ylabel('AUROC (Open-set Performance)')
-ax_2_msp.plot( 'epoch', 'auroc', data=data_msp)
-ax_3_msp.set_xlabel('Acuracy(Closed Set Performance)')
-ax_3_msp.set_ylabel('AUROC (Open-set Performance)')
-ax_3_msp.plot( 'acuracy', 'auroc', data=data_msp, linestyle='none', marker='o')
-
-#ARPL
-data_arpl=pd.read_csv('.\ARPL_cifar10.csv')
-fig_1_arpl, ax_1_arpl = plt.subplots()
-fig_2_arpl, ax_2_arpl = plt.subplots()
-fig_3_arpl, ax_3_arpl = plt.subplots()
-ax_1_arpl.set_xlabel('Epoch')
-ax_1_arpl.set_ylabel('Acuracy(Closed Set Performance)')
-ax_1_arpl.plot( 'epoch', 'acuracy', data=data_arpl)
-ax_2_arpl.set_xlabel('Epoch')
-ax_2_arpl.set_ylabel('AUROC (Open-set Performance)')
-ax_2_arpl.plot( 'epoch', 'auroc', data=data_arpl)
-ax_3_arpl.set_xlabel('Acuracy(Closed Set Performance)')
-ax_3_arpl.set_ylabel('AUROC (Open-set Performance)')
-ax_3_arpl.plot( 'acuracy', 'auroc', data=data_arpl, linestyle='none', marker='o')
-
-#MLS
-data_mls=pd.read_csv('.\MLS_cifar10.csv')
-fig_1_mls, ax_1_mls = plt.subplots()
-fig_2_mls, ax_2_mls = plt.subplots()
-fig_3_mls, ax_3_mls = plt.subplots()
-ax_1_mls.set_xlabel('Epoch')
-ax_1_mls.set_ylabel('Acuracy(Closed Set Performance)')
-ax_1_mls.plot( 'epoch', 'acuracy', data=data_mls)
-ax_2_mls.set_xlabel('Epoch')
-ax_2_mls.set_ylabel('AUROC (Open-set Performance)')
-ax_2_mls.plot( 'epoch', 'auroc', data=data_mls)
-ax_3_mls.set_xlabel('Acuracy(Closed Set Performance)')
-ax_3_mls.set_ylabel('AUROC (Open-set Performance)')
-ax_3_mls.plot( 'acuracy', 'auroc', data=data_mls, linestyle='none', marker='o')
-
 test_transform = transforms.Compose([
             #transforms.ToPILImage(),
             transforms.Resize((32, 32)),
@@ -111,11 +66,11 @@ def load_vid(path):
                         vid.set(cv2.CAP_PROP_POS_FRAMES, 0)
                         continue
 #MSP AND MLS
-model_msp=load_model(path_file_model='.\weights_cifar.pth')
+model_msp=load_model(path_file_model='weights_cifar.pth')
 model_msp.eval()
 
 #ARPL
-model_arpl=load_model('.\ARPL.pth')
+model_arpl=load_model('ARPL.pth')
 model_arpl.eval()
 Loss = importlib.import_module('Loss.'+options['loss'])
 criterion = getattr(Loss, options['loss'])(**options)
@@ -215,31 +170,7 @@ if choice==' 	🖌️  Minh họa':
 
         
    
-elif choice==" 📈 Thống kê":
-    st.subheader("Phương pháp MSP")
-    st.write("          Bảng kết quả    ")
-    data_msp=data_msp.drop('Unnamed: 0',axis=1)
-    st.table(data_msp.head(10))
-    st.pyplot(fig_1_msp)
-    st.pyplot(fig_2_msp)
-    st.pyplot(fig_3_msp)
-    
-    st.subheader("Phương pháp MLS")
-    st.write("          Bảng kết quả    ")
-    data_mls=data_mls.drop('Unnamed: 0',axis=1)
-    st.table(data_mls.head(10))
-    st.pyplot(fig_1_mls)
-    st.pyplot(fig_2_mls)
-    st.pyplot(fig_3_mls)
-    
-    
-    st.subheader("Phương pháp ARPL")
-    st.write("          Bảng kết quả    ")
-    data_arpl=data_arpl.drop('Unnamed: 0',axis=1)
-    st.table(data_arpl.head(10))
-    st.pyplot(fig_1_arpl)
-    st.pyplot(fig_2_arpl)
-    st.pyplot(fig_3_arpl)
+
     
         
 
