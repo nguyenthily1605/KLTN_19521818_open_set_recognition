@@ -3,6 +3,7 @@ import datetime
 import importlib
 import torch
 import cv2
+
 import numpy as np
 from io import BytesIO,StringIO,open
 from PIL import Image
@@ -40,7 +41,7 @@ std = (0.2023, 0.1994, 0.2010)
 name=['deer','horse','truck','automobile']
 
 #MSP
-data_msp=pd.read_csv('MSP_cifar10.csv')
+data_msp=pd.read_csv('.\MSP_cifar10.csv')
 fig_1_msp, ax_1_msp = plt.subplots()
 fig_2_msp, ax_2_msp = plt.subplots()
 fig_3_msp, ax_3_msp = plt.subplots()
@@ -55,7 +56,7 @@ ax_3_msp.set_ylabel('AUROC (Open-set Performance)')
 ax_3_msp.plot( 'acuracy', 'auroc', data=data_msp, linestyle='none', marker='o')
 
 #ARPL
-data_arpl=pd.read_csv('ARPL_cifar10.csv')
+data_arpl=pd.read_csv('.\ARPL_cifar10.csv')
 fig_1_arpl, ax_1_arpl = plt.subplots()
 fig_2_arpl, ax_2_arpl = plt.subplots()
 fig_3_arpl, ax_3_arpl = plt.subplots()
@@ -70,7 +71,7 @@ ax_3_arpl.set_ylabel('AUROC (Open-set Performance)')
 ax_3_arpl.plot( 'acuracy', 'auroc', data=data_arpl, linestyle='none', marker='o')
 
 #MLS
-data_mls=pd.read_csv('MLS_cifar10.csv')
+data_mls=pd.read_csv('.\MLS_cifar10.csv')
 fig_1_mls, ax_1_mls = plt.subplots()
 fig_2_mls, ax_2_mls = plt.subplots()
 fig_3_mls, ax_3_mls = plt.subplots()
@@ -111,16 +112,16 @@ def load_vid(path):
                         vid.set(cv2.CAP_PROP_POS_FRAMES, 0)
                         continue
 #MSP AND MLS
-model_msp=load_model(path_file_model='weights_cifar.pth')
+model_msp=load_model(path_file_model='.\weights_cifar.pth')
 model_msp.eval()
 
 #ARPL
-model_arpl=load_model('ARPL.pth')
+model_arpl=load_model('.\ARPL.pth')
 model_arpl.eval()
 Loss = importlib.import_module('Loss.'+options['loss'])
 criterion = getattr(Loss, options['loss'])(**options)
 criterion=criterion.cpu()
-criterion.load_state_dict(torch.load('ARPL_loss.pth',map_location=torch.device('cpu')))
+criterion.load_state_dict(torch.load('.\ARPL_loss.pth',map_location=torch.device('cpu')))
 
 
 # Tieu de
@@ -187,25 +188,75 @@ new_title = '<p style="font-family:sans-serif; color:Red; font-size: 42px;">Sử
 st.markdown(new_title, unsafe_allow_html=True)
 # Select photo a send it to button
 with st.sidebar:
-    title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 42px;"> 🏠 Menu</p>'
+    title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 35px;"> 🏠 Mô hình</p>'
     st.markdown(title_menu,unsafe_allow_html=True)
-    choice=st.radio("",(" 	🖌️  Minh họa"," 📈 Thống kê"))
-    st.subheader("Chọn ngưỡng")
-    msp=st.slider("",0.0,1.0)  
-test=0
-uploaded_files=st.empty()
-st.write()
-img_known='known.jpg'
-img_unknown='unknown.jpg'
-vid_unknown='unknown.mp4'
-if choice==' 	🖌️  Minh họa': 
-        uploaded_files1= st.file_uploader(" Upload ảnh ",type=['jpg','png'])
-        if(uploaded_files1 is None):
+    choice_mohinh=st.radio("",("   VGG32","    Mobilenetv3"))
+    title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 35px;"> Phương pháp </p>'
+    st.markdown(title_menu,unsafe_allow_html=True)
+
+def style_button_row(clicked_button_ix, n_buttons):
+    def get_button_indices(button_ix):
+        return {
+            'nth_child': button_ix,
+            'nth_last_child': n_buttons - button_ix + 1
+        }
+
+    clicked_style = """
+    div[data-testid*="stHorizontalBlock"] > div:nth-child(%(nth_child)s):nth-last-child(%(nth_last_child)s) button {
+        border-color: rgb(255, 75, 75);
+        color: rgb(255, 75, 75);
+        box-shadow: rgba(255, 75, 75, 0.5) 0px 0px 0px 0.2rem;
+        outline: currentcolor none medium;
+        font-size: 20px;
+    }
+    """
+    unclicked_style = """
+    div[data-testid*="stHorizontalBlock"] > div:nth-child(%(nth_child)s):nth-last-child(%(nth_last_child)s) button {
+        pointer-events: none;
+        cursor: not-allowed;
+        opacity: 0.65;
+        filter: alpha(opacity=65);
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    """
+    style = ""
+    for ix in range(n_buttons):
+        ix += 1
+        if ix == clicked_button_ix:
+            style += clicked_style % get_button_indices(ix)
+    st.markdown(f"<style>{style}</style>", unsafe_allow_html=True)
+col1, col2, col3, col4 = st.sidebar.columns([1, 1, 1, 1])
+with col1:
+    st.button("MSP", on_click=style_button_row, kwargs={
+        'clicked_button_ix': 1, 'n_buttons': 4
+    })
+with col2:
+    st.button("MLS", on_click=style_button_row, kwargs={
+        'clicked_button_ix': 2, 'n_buttons': 4
+    })
+with col3:
+    st.button("ARPL", on_click=style_button_row, kwargs={
+       'clicked_button_ix': 3, 'n_buttons': 4
+
+    })
+st.sidebar.subheader("Chọn ngưỡng")
+msp=st.sidebar.slider("",0.0,1.0) 
+title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 30px;"> Upload ảnh </p>' 
+st.markdown('')
+st.markdown(title_menu,unsafe_allow_html=True)
+uploaded_files1= st.file_uploader('',type=['jpg','png'])
+if(uploaded_files1 is None):
             col1,col2=st.columns(2)
             with col1:
                 st.image(load_image('known.jpg'))
             with col2:
                 st.image(load_image('unknown.jpg'))
+img_known='known.jpg'
+img_unknown='unknown.jpg'
+vid_unknown='unknown.mp4'
+if choice_mohinh==' VGG32': 
+       
         if(uploaded_files1 is not None):
             max=0
             index_max=0
@@ -215,31 +266,7 @@ if choice==' 	🖌️  Minh họa':
 
         
    
-elif choice==" 📈 Thống kê":
-    st.subheader("Phương pháp MSP")
-    st.write("          Bảng kết quả    ")
-    data_msp=data_msp.drop('Unnamed: 0',axis=1)
-    st.table(data_msp.head(10))
-    st.pyplot(fig_1_msp)
-    st.pyplot(fig_2_msp)
-    st.pyplot(fig_3_msp)
-    
-    st.subheader("Phương pháp MLS")
-    st.write("          Bảng kết quả    ")
-    data_mls=data_mls.drop('Unnamed: 0',axis=1)
-    st.table(data_mls.head(10))
-    st.pyplot(fig_1_mls)
-    st.pyplot(fig_2_mls)
-    st.pyplot(fig_3_mls)
-    
-    
-    st.subheader("Phương pháp ARPL")
-    st.write("          Bảng kết quả    ")
-    data_arpl=data_arpl.drop('Unnamed: 0',axis=1)
-    st.table(data_arpl.head(10))
-    st.pyplot(fig_1_arpl)
-    st.pyplot(fig_2_arpl)
-    st.pyplot(fig_3_arpl)
+
     
         
 
