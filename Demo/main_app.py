@@ -202,7 +202,7 @@ if(uploaded_files1 is not None):
     if flag_msp==True or flag_mls==True:
             vid_known=''
             model=load_model(path_file_model='weights_cifar.pth')
-            img=st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
+            st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
             Minh_hoa(uploaded_files=uploaded_files1,threshold_msp=msp,model=model)
 
         
