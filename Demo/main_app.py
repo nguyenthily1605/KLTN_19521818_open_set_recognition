@@ -198,6 +198,7 @@ img_known='known.jpg'
 img_unknown='unknown.jpg'
 vid_unknown='unknown.mp4'
 if(uploaded_files1 is not None):
+  st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
   if choice_mohinh==' VGG32': 
     if flag_msp==True:
             vid_known=''
