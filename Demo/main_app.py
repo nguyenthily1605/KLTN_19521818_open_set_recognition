@@ -57,41 +57,30 @@ def load_image(image_file):
     img = Image.open(image_file)
     img=img.resize((350,205))
     return img
-def load_vid(path):
-    stframe = st.empty()
-    vid = cv2.VideoCapture(path)
-    while vid.isOpened():
-                    ret, frame = vid.read()
-                    if ret:
-                        stframe.image(frame,channels = 'BGR',use_column_width=True)
-                    else:
-                        vid.set(cv2.CAP_PROP_POS_FRAMES, 0)
-                        continue
-
 # Tieu de
 def sosanh(xacsuat,threshold,predictions):
   col1,col2=st.columns(2)
   if xacsuat>threshold:
             if predictions.item()==0:
-                vid_known='deer.mp4'
+                img_known='deer.jpg'
             elif predictions.item()==1:
-                vid_known='horse.mp4'
+                img_known='horse.jpg'
             elif predictions.item()==2:
-                vid_known='truck.mp4'
+                img_known='truck.jpg'
             else:
-                vid_known='auto.mp4'
+                img_known='auto.jpg'
             with col2:
                 st.image(load_image(img_unknown),channels = 'BGR',use_column_width=True)
              
             with col1:
-               
-                load_vid(vid_known)
+               st.image(load_image(img_known),channels = 'BGR',use_column_width=True)
+                
      
   else :
             with col1:
                 st.image(load_image(img_known),channels = 'BGR',use_column_width=True)
             with col2:
-                load_vid(vid_unknown)
+                st.image(load_image("img_unknown"),channels = 'BGR',use_column_width=True)
 def Minh_hoa(uploaded_files,threshold,model,flag_msp=True,flag_mls=False,flag_arpl=False,type_model="VGG32"):
         data=load_image(uploaded_files)
         data=test_transform(data)
@@ -194,7 +183,7 @@ if(uploaded_files1 is None):
                 st.image(load_image('unknown.jpg'))
 img_known='known.jpg'
 img_unknown='unknown.jpg'
-vid_unknown='unknown.mp4'
+
 if(uploaded_files1 is not None):
   #st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
   if choice_mohinh=='   VGG32': 
