@@ -81,7 +81,7 @@ def sosanh(xacsuat,threshold,predictions):
                 st.image(load_image('known.jpg'),channels = 'BGR',use_column_width=True)
             with col2:
                 st.image(load_image("img_unknown.jpg"),channels = 'BGR',use_column_width=True)
-def Minh_hoa(uploaded_files,threshold,model,flag_msp=True,flag_mls=False,flag_arpl=False,type_model="VGG32"):
+def Minh_hoa(uploaded_files,threshold,model,flag_msp=True,flag_mls=False,flag_arpl=False,criterion):
         data=load_image(uploaded_files)
         data=test_transform(data)
         data1=data.unsqueeze(0)
@@ -105,15 +105,12 @@ def Minh_hoa(uploaded_files,threshold,model,flag_msp=True,flag_mls=False,flag_ar
         
         #ARPL
           elif flag_arpl==True:
+ 
             logits_arp, _ = criterion(x, y)
             logits_arp = torch.nn.Softmax(dim=-1)(logits_arp)
             predictions_arp = logits_arp.data.max(1)[1]
             xacsuat_arp=logits_arp.data.max(1)[0].item()
             sosanh(xacsuat_arpl,threshold,predictions_arpl)
-        
-        new_title = '<p style="font-family:sans-serif; color:Red; font-size: 42px;">Kết quả</p>'
-        st.markdown(new_title, unsafe_allow_html=True)
-        
  
 new_title = '<p style="font-family:sans-serif; color:Red; font-size: 42px;">Sử dụng mạng học sâu cho nhận diện không gian mở</p>'
 st.markdown(new_title, unsafe_allow_html=True)
@@ -185,13 +182,21 @@ img_known='known.jpg'
 img_unknown='unknown.jpg'
 
 if(uploaded_files1 is not None):
-  #st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
+  st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
   if choice_mohinh=='   VGG32': 
     if flag_msp==True or flag_mls==True:
             vid_known=''
             model=load_model(path_file_model='weights_cifar.pth')
-            st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
             Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,flag_msp=flag_msp,flag_mls=flag_mls,flag_arpl=flag_arpl)
+    else:
+            Loss = importlib.import_module('methods.ARPL.loss.'+options['loss'])
+            criterion = getattr(Loss, options['loss'])(**options)
+            criterion = criterion.cuda()
+            criterion.load_state_dict(torch.load('ARPL_loss.pth'))
+            model=load_model(path_file_model='ARPL.pth')
+            Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,flag_msp=flag_msp,flag_mls=flag_mls,flag_arpl=flag_arpl,criterion=criterion)
+            
+      
 
         
    
