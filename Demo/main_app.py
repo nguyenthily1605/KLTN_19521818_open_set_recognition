@@ -45,8 +45,10 @@ test_transform = transforms.Compose([
             transforms.ToTensor(),
             transforms.Normalize(mean=mean, std=std),
         ])
-def load_model(path_file_model=''):
-  model=classifier32(num_classes=4)
+
+def load_model(path_file_model='',flag=True):
+  if flag==True:
+    model=classifier32(num_classes=4)
   model = nn.DataParallel(model).cpu()
   pretrain=torch.load(path_file_model,map_location=torch.device('cpu'))
   model.load_state_dict(pretrain)
@@ -147,53 +149,12 @@ with st.sidebar:
     choice_mohinh=st.radio("",("   VGG32","    Mobilenetv3"))
     title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 35px;"> Phương pháp </p>'
     st.markdown(title_menu,unsafe_allow_html=True)
+button_text = "foo", "bar", "foo"
+pairs = zip(button_text, st.sidebar.columns(len(button_text)))
 
-def style_button_row(clicked_button_ix, n_buttons):
-    def get_button_indices(button_ix):
-        return {
-            'nth_child': button_ix,
-            'nth_last_child': n_buttons - button_ix + 1
-        }
-
-    clicked_style = """
-    div[data-testid*="stHorizontalBlock"] > div:nth-child(%(nth_child)s):nth-last-child(%(nth_last_child)s) button {
-        border-color: rgb(255, 75, 75);
-        color: rgb(255, 75, 75);
-        box-shadow: rgba(255, 75, 75, 0.5) 0px 0px 0px 0.2rem;
-        outline: currentcolor none medium;
-        font-size: 20px;
-    }
-    """
-    unclicked_style = """
-    div[data-testid*="stHorizontalBlock"] > div:nth-child(%(nth_child)s):nth-last-child(%(nth_last_child)s) button {
-        pointer-events: none;
-        cursor: not-allowed;
-        opacity: 0.65;
-        filter: alpha(opacity=65);
-        -webkit-box-shadow: none;
-        box-shadow: none;
-    }
-    """
-    style = ""
-    for ix in range(n_buttons):
-        ix += 1
-        if ix == clicked_button_ix:
-            style += clicked_style % get_button_indices(ix)
-    st.markdown(f"<style>{style}</style>", unsafe_allow_html=True)
-col1, col2, col3, col4 = st.sidebar.columns([1, 1, 1, 1])
-with col1:
-    st.button("MSP", on_click=style_button_row, kwargs={
-        'clicked_button_ix': 1, 'n_buttons': 4
-    })
-with col2:
-    st.button("MLS", on_click=style_button_row, kwargs={
-        'clicked_button_ix': 2, 'n_buttons': 4
-    })
-with col3:
-    st.button("ARPL", on_click=style_button_row, kwargs={
-       'clicked_button_ix': 3, 'n_buttons': 4
-
-    })
+for i, (text, col) in enumerate(pairs):
+    if col.button(text, key=f"{text}-{i}"):
+        col.write(f"{text}-{i} clicked")
 st.sidebar.subheader("Chọn ngưỡng")
 msp=st.sidebar.slider("",0.0,1.0) 
 title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 30px;"> Upload ảnh </p>' 
@@ -212,8 +173,6 @@ vid_unknown='unknown.mp4'
 if choice_mohinh==' VGG32': 
        
         if(uploaded_files1 is not None):
-            max=0
-            index_max=0
             vid_known=''
             img=st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
             Minh_hoa(uploaded_files=uploaded_files1,threshold_msp=msp)
