@@ -116,7 +116,7 @@ def Minh_hoa(uploaded_files,threshold,model,flag_msp=True,flag_mls=False,flag_ar
           sosanh(xacsuat_mls,threshold,predictions_mls)
         
         #ARPL
-         if flag_arpl==True:
+        if flag_arpl==True:
             x_arp, y_arp = model_arpl(data1, True)
             logits_arp=y_arp
             logits_arp, _ = criterion(x_arp, y_arp)
