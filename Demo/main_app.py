@@ -200,7 +200,7 @@ msp=st.sidebar.slider("",0.0,1.0)
 title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 30px;"> Upload ảnh </p>' 
 st.markdown('')
 if flag1==True:
-  st.button("MSP")
+  st.markdown(title_menu,unsafe_allow_html=True)
 st.markdown(title_menu,unsafe_allow_html=True)
 uploaded_files1= st.file_uploader('',type=['jpg','png'])
 if(uploaded_files1 is None):
