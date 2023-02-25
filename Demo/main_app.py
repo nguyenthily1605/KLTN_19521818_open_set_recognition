@@ -181,9 +181,9 @@ def style_button_row(clicked_button_ix, n_buttons):
         if ix == clicked_button_ix:
             style += clicked_style % get_button_indices(ix)
     st.markdown(f"<style>{style}</style>", unsafe_allow_html=True)
-col1, col2, col3, col4 = st.sidebar.columns([1, 1, 1, 1])
+col1, col2, col3 = st.sidebar.columns([1, 1, 1])
 with col1:
-    st.button("MSP", on_click=style_button_row, kwargs={
+    flag1=st.button("MSP", on_click=style_button_row, kwargs={
         'clicked_button_ix': 1, 'n_buttons': 4
     })
 with col2:
@@ -199,6 +199,8 @@ st.sidebar.subheader("Chọn ngưỡng")
 msp=st.sidebar.slider("",0.0,1.0) 
 title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 30px;"> Upload ảnh </p>' 
 st.markdown('')
+if flag1==True:
+  st.button("MSP")
 st.markdown(title_menu,unsafe_allow_html=True)
 uploaded_files1= st.file_uploader('',type=['jpg','png'])
 if(uploaded_files1 is None):
