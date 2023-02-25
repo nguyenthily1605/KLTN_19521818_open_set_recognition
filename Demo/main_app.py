@@ -201,7 +201,7 @@ vid_unknown='unknown.mp4'
 if(uploaded_files1 is not None):
   #st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
   if choice_mohinh=='   VGG32': 
-    if flag_msp==True||flag_mls==True:
+    if flag_msp==True or flag_mls==True:
             vid_known=''
             model=load_model(path_file_model='weights_cifar.pth')
             st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
