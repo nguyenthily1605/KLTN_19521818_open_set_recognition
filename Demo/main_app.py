@@ -92,34 +92,31 @@ def sosanh(xacsuat,threshold,predictions):
                 st.image(load_image(img_known),channels = 'BGR',use_column_width=True)
             with col2:
                 load_vid(vid_unknown)
-def Minh_hoa(uploaded_files,threshold,model,flag_msp=True,flag_mls=False,flag_arpl=False):
+def Minh_hoa(uploaded_files,threshold,model,flag_msp=True,flag_mls=False,flag_arpl=False,type_model="VGG32"):
         data=load_image(uploaded_files)
         data=test_transform(data)
         data1=data.unsqueeze(0)
         new_title = '<p style="font-family:sans-serif; color:Red; font-size: 42px;">Kết quả</p>'
         st.markdown(new_title, unsafe_allow_html=True)
+        if type_model=="VGG32":
+          x, y = model(data1, True)
+          logits=y
         if flag_msp==True:
-          x_msp, y_msp = model_msp(data1, True)
-          logits_msp=y_msp
-          logits_msp = torch.nn.Softmax(dim=-1)(logits_msp)
-          predictions_msp = logits_msp.data.max(1)[1]
-          xacsuat_msp=logits_msp.data.max(1)[0].item()
+          logits = torch.nn.Softmax(dim=-1)(logits)
+          predictions_msp = logits.data.max(1)[1]
+          xacsuat_msp=logits.data.max(1)[0].item()
           sosanh(xacsuat_msp,threshold,predictions_msp)
         
         #MLS
         if flag_mls==True:
-          x_mls, y_mls = model_msp(data1, True)
-          logits_mls=y_mls
     #logits_mls = torch.nn.Softmax(dim=-1)(logits_mls)  
-          predictions_mls = logits_mls.data.max(1)[1]
-          xacsuat_mls=logits_mls.data.max(1)[0].item()
+          predictions_mls = logits.data.max(1)[1]
+          xacsuat_mls=logits.data.max(1)[0].item()
           sosanh(xacsuat_mls,threshold,predictions_mls)
         
         #ARPL
         if flag_arpl==True:
-            x_arp, y_arp = model_arpl(data1, True)
-            logits_arp=y_arp
-            logits_arp, _ = criterion(x_arp, y_arp)
+            logits_arp, _ = criterion(x, y)
             logits_arp = torch.nn.Softmax(dim=-1)(logits_arp)
             predictions_arp = logits_arp.data.max(1)[1]
             xacsuat_arp=logits_arp.data.max(1)[0].item()
