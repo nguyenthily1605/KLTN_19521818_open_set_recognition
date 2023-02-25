@@ -70,8 +70,8 @@ def load_vid(path):
 
 # Tieu de
 def sosanh(xacsuat,threshold,predictions):
-          col1,col2=st.columns(2)
-          if xacsuat>threshold:
+         col1,col2=st.columns(2)
+         if xacsuat>threshold:
             if predictions.item()==0:
                 vid_known='deer.mp4'
             elif predictions.item()==1:
@@ -87,7 +87,7 @@ def sosanh(xacsuat,threshold,predictions):
                
                 load_vid(vid_known)
 
-        else:
+          else:
             with col1:
                 st.image(load_image(img_known),channels = 'BGR',use_column_width=True)
             with col2:
