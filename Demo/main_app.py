@@ -69,49 +69,14 @@ def load_vid(path):
                         continue
 
 # Tieu de
-def Minh_hoa(uploaded_files,threshold_msp,model):
-    xacsuat_msp=0
-    xacsuat_mls=0
-    xacsuat_arp=0
-    if uploaded_files is not None:
-
-        data=load_image(uploaded_files)
-        data=test_transform(data)
-        data1=data.unsqueeze(0)
-        x_msp, y_msp = model_msp(data1, True)
-        logits_msp=y_msp
-        logits_msp = torch.nn.Softmax(dim=-1)(logits_msp)
-        predictions_msp = logits_msp.data.max(1)[1]
-        xacsuat_msp=logits_msp.data.max(1)[0].item()
-        
-        #MLS
-        x_mls, y_mls = model_msp(data1, True)
-        logits_mls=y_mls
-    #logits_mls = torch.nn.Softmax(dim=-1)(logits_mls)  
-        predictions_mls = logits_mls.data.max(1)[1]
-        xacsuat_mls=logits_mls.data.max(1)[0].item()
-        
-        #ARPL
-        x_arp, y_arp = model_arpl(data1, True)
-        logits_arp=y_arp
-        logits_arp, _ = criterion(x_arp, y_arp)
-        logits_arp = torch.nn.Softmax(dim=-1)(logits_arp)
-        predictions_arp = logits_arp.data.max(1)[1]
-        xacsuat_arp=logits_arp.data.max(1)[0].item()
-        
-        new_title = '<p style="font-family:sans-serif; color:Red; font-size: 42px;">Kết quả</p>'
-        st.markdown(new_title, unsafe_allow_html=True)
-    #st.header("Kết quả")
-        kq=[xacsuat_msp,xacsuat_arp]
-        kq=np.array(kq)
-        col1,col2=st.columns(2)
-   
-        if xacsuat_arp>threshold_msp:
-            if predictions_arp.item()==0:
+def sosanh(xacsuat,threshold,predictions):
+          col1,col2=st.columns(2)
+          if xacsuat>threshold:
+            if predictions.item()==0:
                 vid_known='deer.mp4'
-            elif predictions_arp.item()==1:
+            elif predictions.item()==1:
                 vid_known='horse.mp4'
-            elif predictions_arp.item()==2:
+            elif predictions.item()==2:
                 vid_known='truck.mp4'
             else:
                 vid_known='auto.mp4'
@@ -127,6 +92,42 @@ def Minh_hoa(uploaded_files,threshold_msp,model):
                 st.image(load_image(img_known),channels = 'BGR',use_column_width=True)
             with col2:
                 load_vid(vid_unknown)
+def Minh_hoa(uploaded_files,threshold,model,flag_msp=True,flag_mls=False,flag_arpl=False):
+        data=load_image(uploaded_files)
+        data=test_transform(data)
+        data1=data.unsqueeze(0)
+        new_title = '<p style="font-family:sans-serif; color:Red; font-size: 42px;">Kết quả</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        if flag_msp==True:
+          x_msp, y_msp = model_msp(data1, True)
+          logits_msp=y_msp
+          logits_msp = torch.nn.Softmax(dim=-1)(logits_msp)
+          predictions_msp = logits_msp.data.max(1)[1]
+          xacsuat_msp=logits_msp.data.max(1)[0].item()
+          sosanh(xacsuat_msp,threshold,predictions_msp)
+        
+        #MLS
+        if flag_mls==True:
+          x_mls, y_mls = model_msp(data1, True)
+          logits_mls=y_mls
+    #logits_mls = torch.nn.Softmax(dim=-1)(logits_mls)  
+          predictions_mls = logits_mls.data.max(1)[1]
+          xacsuat_mls=logits_mls.data.max(1)[0].item()
+          sosanh(xacsuat_mls,threshold,predictions_mls)
+        
+        #ARPL
+         if flag_arpl==True:
+            x_arp, y_arp = model_arpl(data1, True)
+            logits_arp=y_arp
+            logits_arp, _ = criterion(x_arp, y_arp)
+            logits_arp = torch.nn.Softmax(dim=-1)(logits_arp)
+            predictions_arp = logits_arp.data.max(1)[1]
+            xacsuat_arp=logits_arp.data.max(1)[0].item()
+            sosanh(xacsuat_arpl,threshold,predictions_arpl)
+        
+        new_title = '<p style="font-family:sans-serif; color:Red; font-size: 42px;">Kết quả</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        
  
 new_title = '<p style="font-family:sans-serif; color:Red; font-size: 42px;">Sử dụng mạng học sâu cho nhận diện không gian mở</p>'
 st.markdown(new_title, unsafe_allow_html=True)
@@ -200,11 +201,11 @@ vid_unknown='unknown.mp4'
 if(uploaded_files1 is not None):
   #st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
   if choice_mohinh=='   VGG32': 
-    if flag_msp==True:
+    if flag_msp==True||flag_mls==True:
             vid_known=''
             model=load_model(path_file_model='weights_cifar.pth')
             st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
-            Minh_hoa(uploaded_files=uploaded_files1,threshold_msp=msp,model=model)
+            Minh_hoa(uploaded_files=uploaded_files1,threshold_msp=msp,model=model,flag_msp,flag_mls,flag_arpl)
 
         
    
