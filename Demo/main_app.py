@@ -101,21 +101,21 @@ def Minh_hoa(uploaded_files,threshold,model,flag_msp=True,flag_mls=False,flag_ar
         if type_model=="VGG32":
           x, y = model(data1, True)
           logits=y
-        if flag_msp==True:
-          logits = torch.nn.Softmax(dim=-1)(logits)
-          predictions_msp = logits.data.max(1)[1]
-          xacsuat_msp=logits.data.max(1)[0].item()
-          sosanh(xacsuat_msp,threshold,predictions_msp)
+          if flag_msp==True:
+            logits = torch.nn.Softmax(dim=-1)(logits)
+            predictions_msp = logits.data.max(1)[1]
+            xacsuat_msp=logits.data.max(1)[0].item()
+            sosanh(xacsuat_msp,threshold,predictions_msp)
         
         #MLS
-        if flag_mls==True:
+          elif flag_mls==True:
     #logits_mls = torch.nn.Softmax(dim=-1)(logits_mls)  
-          predictions_mls = logits.data.max(1)[1]
-          xacsuat_mls=logits.data.max(1)[0].item()
-          sosanh(xacsuat_mls,threshold,predictions_mls)
+            predictions_mls = logits.data.max(1)[1]
+            xacsuat_mls=logits.data.max(1)[0].item()
+            sosanh(xacsuat_mls,threshold,predictions_mls)
         
         #ARPL
-        if flag_arpl==True:
+          elif flag_arpl==True:
             logits_arp, _ = criterion(x, y)
             logits_arp = torch.nn.Softmax(dim=-1)(logits_arp)
             predictions_arp = logits_arp.data.max(1)[1]
