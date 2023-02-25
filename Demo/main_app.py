@@ -81,7 +81,7 @@ def sosanh(xacsuat,threshold,predictions):
                 st.image(load_image('known.jpg'),channels = 'BGR',use_column_width=True)
             with col2:
                 st.image(load_image("img_unknown.jpg"),channels = 'BGR',use_column_width=True)
-def Minh_hoa(uploaded_files,threshold,model,flag_msp=True,flag_mls=False,flag_arpl=False,criterion):
+def Minh_hoa(uploaded_files,threshold,criterion,model,flag_msp=True,flag_mls=False,flag_arpl=False):
         data=load_image(uploaded_files)
         data=test_transform(data)
         data1=data.unsqueeze(0)
@@ -194,7 +194,7 @@ if(uploaded_files1 is not None):
             criterion = criterion.cuda()
             criterion.load_state_dict(torch.load('ARPL_loss.pth'))
             model=load_model(path_file_model='ARPL.pth')
-            Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,flag_msp=flag_msp,flag_mls=flag_mls,flag_arpl=flag_arpl,criterion=criterion)
+            Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,criterion=criterion,model=model,flag_msp=flag_msp,flag_mls=flag_mls,flag_arpl=flag_arpl)
             
       
 
