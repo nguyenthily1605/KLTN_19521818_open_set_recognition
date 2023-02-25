@@ -67,21 +67,9 @@ def load_vid(path):
                     else:
                         vid.set(cv2.CAP_PROP_POS_FRAMES, 0)
                         continue
-#MSP AND MLS
-model_msp=load_model(path_file_model='weights_cifar.pth')
-model_msp.eval()
-
-#ARPL
-model_arpl=load_model('ARPL.pth')
-model_arpl.eval()
-Loss = importlib.import_module('Loss.'+options['loss'])
-criterion = getattr(Loss, options['loss'])(**options)
-criterion=criterion.cpu()
-criterion.load_state_dict(torch.load('ARPL_loss.pth',map_location=torch.device('cpu')))
-
 
 # Tieu de
-def Minh_hoa(uploaded_files,threshold_msp):
+def Minh_hoa(uploaded_files,threshold_msp,model):
     xacsuat_msp=0
     xacsuat_mls=0
     xacsuat_arp=0
@@ -209,12 +197,13 @@ if(uploaded_files1 is None):
 img_known='known.jpg'
 img_unknown='unknown.jpg'
 vid_unknown='unknown.mp4'
-if choice_mohinh==' VGG32': 
-       
-        if(uploaded_files1 is not None):
+if(uploaded_files1 is not None):
+  if choice_mohinh==' VGG32': 
+    if flag_msp==True or flag_mls==True:
             vid_known=''
+            model=load_model(path_file_model='weights_cifar.pth')
             img=st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
-            Minh_hoa(uploaded_files=uploaded_files1,threshold_msp=msp)
+            Minh_hoa(uploaded_files=uploaded_files1,threshold_msp=msp,model=model)
 
         
    
