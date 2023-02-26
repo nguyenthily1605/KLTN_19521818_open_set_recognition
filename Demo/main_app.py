@@ -11,6 +11,7 @@ from torch import nn
 from Loss.ARPLoss import ARPLoss
 from classifier32 import classifier32
 from torchvision import transforms
+from torchvision.models import mobilenetv3
 import argparse
 import pandas as pd
 l=cv2.__version__
@@ -50,6 +51,8 @@ test_transform = transforms.Compose([
 def load_model(path_file_model='',flag=True):
   if flag==True:
     model=classifier32(num_classes=4)
+  else:
+    model=mobilenetv3.mobilenet_v3_small(input=(32,32,3),num_classes=4)
   model = nn.DataParallel(model).cpu()
   pretrain=torch.load(path_file_model,map_location=torch.device('cpu'))
   model.load_state_dict(pretrain)
@@ -91,22 +94,24 @@ def Minh_hoa(uploaded_files,threshold,model,choice_pp="MSP",type_model="VGG32"):
         data1=data.unsqueeze(0)
         if type_model=="VGG32":
           x, y = model(data1, True)
-          logits=y
-          if choice_pp=="MSP":
+        else: 
+          y = net(data)
+        logits=y
+        if choice_pp=="MSP":
             logits = torch.nn.Softmax(dim=-1)(logits)
             predictions_msp = logits.data.max(1)[1]
             xacsuat_msp=logits.data.max(1)[0].item()
             sosanh(xacsuat_msp,threshold,predictions_msp)
         
         #MLS
-          elif choice_pp=="MLS":
+         elif choice_pp=="MLS":
     #logits_mls = torch.nn.Softmax(dim=-1)(logits_mls)  
             predictions_mls = logits.data.max(1)[1]
             xacsuat_mls=logits.data.max(1)[0].item()
             sosanh(xacsuat_mls,threshold,predictions_mls)
         
         #ARPL
-          elif choice_pp=="ARPL":
+         elif choice_pp=="ARPL":
  
             logits_arp, _ = criterion(x, y)
             logits_arp = torch.nn.Softmax(dim=-1)(logits_arp)
@@ -162,6 +167,20 @@ if(uploaded_files1 is not None):
             criterion.eval()
             model=load_model(path_file_model='ARPL.pth')
             Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,choice_pp=choice_pp)
+  else:
+    if choice_pp=="MSP" or choice_pp=="MLS":
+            vid_known=''
+            model=load_model(path_file_model='mobilenetv3_msp')
+            Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,choice_pp=choice_pp,type_model="Mobilenetv3")
+    else:
+                       #criterion = ARPLoss(options)
+            criterion = criterion.cpu()
+            criterion.load_state_dict(torch.load('ARPL_loss.pth',map_location=torch.device('cpu')))
+            criterion.eval()
+            model=load_model(path_file_model='ARPL.pth')
+            Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,choice_pp=choice_pp)
+  
+    
             
       
 
