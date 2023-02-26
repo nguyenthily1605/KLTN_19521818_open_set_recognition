@@ -118,7 +118,7 @@ new_title = '<p style="font-family:sans-serif; color:Red; font-size: 42px;">Sử
 st.markdown(new_title, unsafe_allow_html=True)
 # Select photo a send it to button
 if "visibility" not in st.session_state:
-    st.session_state.horizontal = False
+    st.session_state.horizontal = True
 with st.sidebar:
     title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 35px;"> 🏠 Mô hình</p>'
     st.markdown(title_menu,unsafe_allow_html=True)
