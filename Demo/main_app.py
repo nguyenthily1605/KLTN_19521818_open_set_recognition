@@ -130,7 +130,6 @@ with st.sidebar:
         "",
         ["MSP", "MLS", "ARPL"],index=2,
         key="visibility",
-        label_visibility=st.session_state.visibility,
         horizontal=st.session_state.horizontal,
     )
 
