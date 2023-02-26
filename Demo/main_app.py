@@ -183,7 +183,7 @@ if(uploaded_files1 is None):
 img_known='known.jpg'
 img_unknown='unknown.jpg'
 Loss = importlib.import_module('Loss.ARPLoss')
-criterion = getattr(Loss, options['loss'])(**options
+criterion = getattr(Loss, options['loss'])(**options)
 if(uploaded_files1 is not None):
   st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
   if choice_mohinh=='   VGG32': 
