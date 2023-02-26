@@ -119,7 +119,6 @@ st.markdown(new_title, unsafe_allow_html=True)
 # Select photo a send it to button
 if "visibility" not in st.session_state:
     st.session_state.visibility = "visible"
-    st.session_state.disabled = False
     st.session_state.horizontal = True
 with st.sidebar:
     title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 35px;"> 🏠 Mô hình</p>'
@@ -132,7 +131,6 @@ with st.sidebar:
         ["MSP", "MLS", "ARPL"],
         key="visibility",
         label_visibility=st.session_state.visibility,
-        disabled=st.session_state.disabled,
         horizontal=st.session_state.horizontal,
     )
 
