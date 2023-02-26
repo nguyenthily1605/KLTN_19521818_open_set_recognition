@@ -85,28 +85,28 @@ def sosanh(xacsuat,threshold,predictions):
                 st.image(load_image('known.jpg'),channels = 'BGR',use_column_width=True)
             with col2:
                 st.image(load_image("img_unknown.jpg"),channels = 'BGR',use_column_width=True)
-def Minh_hoa(uploaded_files,threshold,model,flag_msp=True,flag_mls=False,flag_arpl=False,type_model="VGG32"):
+def Minh_hoa(uploaded_files,threshold,model,choice_pp="MSP",type_model="VGG32"):
         data=load_image(uploaded_files)
         data=test_transform(data)
         data1=data.unsqueeze(0)
         if type_model=="VGG32":
           x, y = model(data1, True)
           logits=y
-          if flag_msp==True:
+          if choice_pp=="MSP":
             logits = torch.nn.Softmax(dim=-1)(logits)
             predictions_msp = logits.data.max(1)[1]
             xacsuat_msp=logits.data.max(1)[0].item()
             sosanh(xacsuat_msp,threshold,predictions_msp)
         
         #MLS
-          elif flag_mls==True:
+          elif choice_pp=="MLS":
     #logits_mls = torch.nn.Softmax(dim=-1)(logits_mls)  
             predictions_mls = logits.data.max(1)[1]
             xacsuat_mls=logits.data.max(1)[0].item()
             sosanh(xacsuat_mls,threshold,predictions_mls)
         
         #ARPL
-          elif flag_arpl==True:
+          elif choice_pp=="ARPL":
  
             logits_arp, _ = criterion(x, y)
             logits_arp = torch.nn.Softmax(dim=-1)(logits_arp)
@@ -117,58 +117,21 @@ def Minh_hoa(uploaded_files,threshold,model,flag_msp=True,flag_mls=False,flag_ar
 new_title = '<p style="font-family:sans-serif; color:Red; font-size: 42px;">Sử dụng mạng học sâu cho nhận diện không gian mở</p>'
 st.markdown(new_title, unsafe_allow_html=True)
 # Select photo a send it to button
+if "visibility" not in st.session_state:
+    st.session_state.horizontal = False
 with st.sidebar:
     title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 35px;"> 🏠 Mô hình</p>'
     st.markdown(title_menu,unsafe_allow_html=True)
-    choice_mohinh=st.radio("",("   VGG32","    Mobilenetv3"))
+    choice_mohinh=st.radio("",("   VGG32","    Mobilenetv3"),index=1)
     title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 35px;"> Phương pháp </p>'
     st.markdown(title_menu,unsafe_allow_html=True)
-def style_button_row(clicked_button_ix, n_buttons):
-    def get_button_indices(button_ix):
-        return {
-            'nth_child': button_ix,
-            'nth_last_child': n_buttons - button_ix + 1
-        }
+    choice_pp=st.radio(
+        "",
+        ["MSP", "MLS", "ARPL"],
+        key="visibility"
+        horizontal=st.session_state.horizontal,
+    )
 
-    clicked_style = """
-    div[data-testid*="stHorizontalBlock"] > div:nth-child(%(nth_child)s):nth-last-child(%(nth_last_child)s) button {
-        border-color: rgb(255, 75, 75);
-        color: rgb(255, 75, 75);
-        box-shadow: rgba(255, 75, 75, 0.5) 0px 0px 0px 0.2rem;
-        outline: currentcolor none medium;
-        font-size: 20px;
-    }
-    """
-    unclicked_style = """
-    div[data-testid*="stHorizontalBlock"] > div:nth-child(%(nth_child)s):nth-last-child(%(nth_last_child)s) button {
-        pointer-events: none;
-        cursor: not-allowed;
-        opacity: 0.65;
-        filter: alpha(opacity=65);
-        -webkit-box-shadow: none;
-        box-shadow: none;
-    }
-    """
-    style = ""
-    for ix in range(n_buttons):
-        ix += 1
-        if ix == clicked_button_ix:
-            style += clicked_style % get_button_indices(ix)
-    st.markdown(f"<style>{style}</style>", unsafe_allow_html=True)
-col1, col2, col3 = st.sidebar.columns([1, 1, 1])
-with col1:
-    flag_msp=st.button("MSP", on_click=style_button_row, kwargs={
-        'clicked_button_ix': 1, 'n_buttons': 4
-    })
-with col2:
-    flag_mls=st.button("MLS", on_click=style_button_row, kwargs={
-        'clicked_button_ix': 2, 'n_buttons': 4
-    })
-with col3:
-    flag_arpl=st.button("ARPL", on_click=style_button_row, kwargs={
-       'clicked_button_ix': 3, 'n_buttons': 4
-
-    })
 st.sidebar.subheader("Chọn ngưỡng")
 msp=st.sidebar.slider("",0.0,1.0) 
 title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 30px;"> Upload ảnh </p>' 
@@ -187,17 +150,17 @@ criterion = getattr(Loss, options['loss'])(**options)
 if(uploaded_files1 is not None):
   st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
   if choice_mohinh=='   VGG32': 
-    if flag_msp==True or flag_mls==True:
+    if choice_pp=="MSP" or choice_pp=="MLS":
             vid_known=''
             model=load_model(path_file_model='weights_cifar.pth')
-            Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,flag_msp=flag_msp,flag_mls=flag_mls,flag_arpl=flag_arpl)
+            Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,choice_pp=choice_pp)
     else:
                        #criterion = ARPLoss(options)
             criterion = criterion.cpu()
             criterion.load_state_dict(torch.load('ARPL_loss.pth',map_location=torch.device('cpu')))
             criterion.eval()
             model=load_model(path_file_model='ARPL.pth')
-            Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,flag_msp=flag_msp,flag_mls=flag_mls,flag_arpl=flag_arpl)
+            Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,choice_pp=choice_pp)
             
       
 
