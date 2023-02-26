@@ -110,8 +110,8 @@ def Minh_hoa(uploaded_files,threshold,model,choice_pp="MSP",type_model="VGG32"):
  
             logits_arp, _ = criterion(x, y)
             logits_arp = torch.nn.Softmax(dim=-1)(logits_arp)
-            predictions_arp = logits_arp.data.max(1)[1]
-            xacsuat_arp=logits_arp.data.max(1)[0].item()
+            predictions_arpl = logits_arp.data.max(1)[1]
+            xacsuat_arpl=logits_arp.data.max(1)[0].item()
             sosanh(xacsuat_arpl,threshold,predictions_arpl)
  
 new_title = '<p style="font-family:sans-serif; color:Red; font-size: 42px;">Sử dụng mạng học sâu cho nhận diện không gian mở</p>'
