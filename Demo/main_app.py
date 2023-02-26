@@ -170,14 +170,14 @@ if(uploaded_files1 is not None):
   else:
     if choice_pp=="MSP" or choice_pp=="MLS":
             vid_known=''
-            model=load_model(path_file_model='mobilenetv3_msp')
+            model=load_model(path_file_model='mobilenetv3_msp',flag=False)
             Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,choice_pp=choice_pp,type_model="Mobilenetv3")
     else:
                        #criterion = ARPLoss(options)
             criterion = criterion.cpu()
             criterion.load_state_dict(torch.load('ARPL_loss.pth',map_location=torch.device('cpu')))
             criterion.eval()
-            model=load_model(path_file_model='ARPL.pth')
+            model=load_model(path_file_model='ARPL.pth',flag=False)
             Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,choice_pp=choice_pp)
   
     
