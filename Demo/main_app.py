@@ -83,7 +83,7 @@ def sosanh(xacsuat,threshold,predictions):
                 st.image(load_image('known.jpg'),channels = 'BGR',use_column_width=True)
             with col2:
                 st.image(load_image("img_unknown.jpg"),channels = 'BGR',use_column_width=True)
-def Minh_hoa(uploaded_files,threshold,criterion,model,flag_msp=True,flag_mls=False,flag_arpl=False):
+def Minh_hoa(uploaded_files,threshold,criterion,model,flag_msp=True,flag_mls=False,flag_arpl=False,type_model="VGG32):
         data=load_image(uploaded_files)
         data=test_transform(data)
         data1=data.unsqueeze(0)
