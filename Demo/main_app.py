@@ -127,8 +127,8 @@ with st.sidebar:
     title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 35px;"> Phương pháp </p>'
     st.markdown(title_menu,unsafe_allow_html=True)
     choice_pp=st.radio(
-        "Set label visibility 👇",
-        ["visible", "hidden", "collapsed"],index=2,
+        "",
+        ["MSP", "MLS", "ARPL"],index=2,
         key="visibility",
         label_visibility=st.session_state.visibility,
         horizontal=st.session_state.horizontal,
