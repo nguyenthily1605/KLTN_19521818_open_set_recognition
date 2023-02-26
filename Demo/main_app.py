@@ -104,14 +104,14 @@ def Minh_hoa(uploaded_files,threshold,model,choice_pp="MSP",type_model="VGG32"):
             sosanh(xacsuat_msp,threshold,predictions_msp)
         
         #MLS
-         elif choice_pp=="MLS":
+        elif choice_pp=="MLS":
     #logits_mls = torch.nn.Softmax(dim=-1)(logits_mls)  
             predictions_mls = logits.data.max(1)[1]
             xacsuat_mls=logits.data.max(1)[0].item()
             sosanh(xacsuat_mls,threshold,predictions_mls)
         
         #ARPL
-         elif choice_pp=="ARPL":
+        elif choice_pp=="ARPL":
  
             logits_arp, _ = criterion(x, y)
             logits_arp = torch.nn.Softmax(dim=-1)(logits_arp)
