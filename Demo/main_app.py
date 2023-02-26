@@ -8,6 +8,7 @@ import numpy as np
 from io import BytesIO,StringIO,open
 from PIL import Image
 from torch import nn
+from ARPLoss import ARPLoss
 from classifier32 import classifier32
 from torchvision import transforms
 import argparse
@@ -189,8 +190,8 @@ if(uploaded_files1 is not None):
             model=load_model(path_file_model='weights_cifar.pth')
             Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,flag_msp=flag_msp,flag_mls=flag_mls,flag_arpl=flag_arpl)
     else:
-            Loss = importlib.import_module(options['loss']+".py")
-            criterion = getattr(Loss, options['loss'])(**options)
+            
+            criterion = ARPLoss(options)
             criterion = criterion.cuda()
             criterion.load_state_dict(torch.load('ARPL_loss.pth'))
             model=load_model(path_file_model='ARPL.pth')
