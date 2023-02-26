@@ -128,7 +128,7 @@ with st.sidebar:
     choice_pp=st.radio(
         "",
         ["MSP", "MLS", "ARPL"],
-        key="visibility"
+        key="visibility",
         horizontal=st.session_state.horizontal,
     )
 
