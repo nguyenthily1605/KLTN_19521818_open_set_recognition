@@ -193,8 +193,9 @@ if(uploaded_files1 is not None):
             Loss = importlib.import_module('Loss.ARPLoss')
             criterion = getattr(Loss, options['loss'])(**options)
             #criterion = ARPLoss(options)
-            #criterion = criterion.cuda()
+            criterion = criterion.cpu()
             criterion.load_state_dict(torch.load('ARPL_loss.pth'))
+            criterion.eval()
             model=load_model(path_file_model='ARPL.pth')
             Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,criterion=criterion,model=model,flag_msp=flag_msp,flag_mls=flag_mls,flag_arpl=flag_arpl)
             
