@@ -61,6 +61,8 @@ def load_image(image_file):
     return img
 # Tieu de
 def sosanh(xacsuat,threshold,predictions):
+  new_title = '<p style="font-family:sans-serif; color:Red; font-size: 42px;">Kết quả</p>'
+  st.markdown(new_title, unsafe_allow_html=True)
   col1,col2=st.columns(2)
   if xacsuat>threshold:
             if predictions.item()==0:
@@ -83,12 +85,10 @@ def sosanh(xacsuat,threshold,predictions):
                 st.image(load_image('known.jpg'),channels = 'BGR',use_column_width=True)
             with col2:
                 st.image(load_image("img_unknown.jpg"),channels = 'BGR',use_column_width=True)
-def Minh_hoa(uploaded_files,threshold,criterion,model,flag_msp=True,flag_mls=False,flag_arpl=False,type_model="VGG32"):
+def Minh_hoa(uploaded_files,threshold,model,flag_msp=True,flag_mls=False,flag_arpl=False,type_model="VGG32"):
         data=load_image(uploaded_files)
         data=test_transform(data)
         data1=data.unsqueeze(0)
-        new_title = '<p style="font-family:sans-serif; color:Red; font-size: 42px;">Kết quả</p>'
-        st.markdown(new_title, unsafe_allow_html=True)
         if type_model=="VGG32":
           x, y = model(data1, True)
           logits=y
@@ -182,7 +182,8 @@ if(uploaded_files1 is None):
                 st.image(load_image('unknown.jpg'))
 img_known='known.jpg'
 img_unknown='unknown.jpg'
-
+Loss = importlib.import_module('Loss.ARPLoss')
+criterion = getattr(Loss, options['loss'])(**options
 if(uploaded_files1 is not None):
   st.image(load_image(uploaded_files1),channels = 'BGR',use_column_width=True)
   if choice_mohinh=='   VGG32': 
@@ -191,9 +192,7 @@ if(uploaded_files1 is not None):
             model=load_model(path_file_model='weights_cifar.pth')
             Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,flag_msp=flag_msp,flag_mls=flag_mls,flag_arpl=flag_arpl)
     else:
-            Loss = importlib.import_module('Loss.ARPLoss')
-            criterion = getattr(Loss, options['loss'])(**options)
-            #criterion = ARPLoss(options)
+                       #criterion = ARPLoss(options)
             criterion = criterion.cpu()
             criterion.load_state_dict(torch.load('ARPL_loss.pth',map_location=torch.device('cpu')))
             criterion.eval()
