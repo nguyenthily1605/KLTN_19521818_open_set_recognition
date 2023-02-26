@@ -126,7 +126,7 @@ with st.sidebar:
     choice_mohinh=st.radio("",("   VGG32","    Mobilenetv3"),index=1)
     title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 35px;"> Phương pháp </p>'
     st.markdown(title_menu,unsafe_allow_html=True)
-    choice_pp=st.radio(
+    st.radio(
         "",
         ["MSP", "MLS", "ARPL"],index=2,
         key="visibility",
