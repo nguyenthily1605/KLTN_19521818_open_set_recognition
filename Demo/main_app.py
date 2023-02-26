@@ -8,7 +8,7 @@ import numpy as np
 from io import BytesIO,StringIO,open
 from PIL import Image
 from torch import nn
-from ARPLoss import ARPLoss
+from Loss.ARPLoss import ARPLoss
 from classifier32 import classifier32
 from torchvision import transforms
 import argparse
