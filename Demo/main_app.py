@@ -69,25 +69,17 @@ def sosanh(xacsuat,threshold,predictions):
   col1,col2=st.columns(2)
   if xacsuat>threshold:
             if predictions.item()==0:
-                img_known='deer.jpg'
+                st.success('Đối tượng thuộc phạm vi đã được học : airplanes', icon="✅")
             elif predictions.item()==1:
-                img_known='horse.jpg'
+                st.success('Đối tượng thuộc phạm vi đã được học :  motorbikes', icon="✅")
             elif predictions.item()==2:
-                img_known='truck.jpg'
+                st.success('Đối tượng thuộc phạm vi đã được học : leopards', icon="✅")
             else:
-                img_known='auto.jpg'
-            with col2:
-                st.image(load_image(img_unknown),channels = 'BGR',use_column_width=True)
-             
-            with col1:
-               st.image(load_image(img_known),channels = 'BGR',use_column_width=True)
-                
+                st.success('Đối tượng thuộc phạm vi đã được học : watch', icon="✅")
+          
      
   else :
-            with col1:
-                st.image(load_image('known.jpg'),channels = 'BGR',use_column_width=True)
-            with col2:
-                st.image(load_image("img_unknown.jpg"),channels = 'BGR',use_column_width=True)
+           st.error('Đối tượng không thuộc phạm vi được học', icon="🚨")
 def Minh_hoa(uploaded_files,threshold,model,choice_pp="MSP",type_model="VGG32"):
         data=load_image(uploaded_files)
         data=test_transform(data)
