@@ -48,11 +48,13 @@ test_transform = transforms.Compose([
             transforms.Normalize(mean=mean, std=std),
         ])
 
-def load_model(path_file_model='',flag=True):
+def load_model(path_file_model='',flag=True,loss='Softmax'):
   if flag==True:
     model=classifier32(num_classes=4,feat_dim=576)
   else:
     model=mobilenetv3.mobilenet_v3_small(input=(32,32,3),num_classes=4)
+    if  loss=='ARPLoss':
+              model.classifier = nn.Sequential(*list(model.classifier.children())[:-4])
   model = nn.DataParallel(model).cpu()
   pretrain=torch.load(path_file_model,map_location=torch.device('cpu'))
   model.load_state_dict(pretrain)
@@ -169,7 +171,7 @@ if(uploaded_files1 is not None):
             criterion = criterion.cpu()
             criterion.load_state_dict(torch.load('mobile_caltech_criterion_arpl',map_location=torch.device('cpu')))
             criterion.eval()
-            model=load_model(path_file_model='mobile_caltech_model_arpl',flag=False)
+            model=load_model(path_file_model='mobile_caltech_model_arpl',flag=False,loss='ARPLoss')
             Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,choice_pp=choice_pp,type_model="Mobilenetv3")
   
     
