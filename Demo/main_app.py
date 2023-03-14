@@ -70,12 +70,12 @@ def sosanh(xacsuat,threshold,predictions):
   st.markdown(new_title, unsafe_allow_html=True)
   col1,col2=st.columns(2)
   if xacsuat>threshold:
-            if predictions.item()==0:
-                st.success('Đối tượng thuộc phạm vi đã được học : airplanes', icon="✅")
+            if predictions.item()==2:
+                st.success('Đối tượng thuộc phạm vi đã được học :  leopards', icon="✅")
             elif predictions.item()==1:
                 st.success('Đối tượng thuộc phạm vi đã được học :  motorbikes', icon="✅")
-            elif predictions.item()==2:
-                st.success('Đối tượng thuộc phạm vi đã được học : leopards', icon="✅")
+            elif predictions.item()==0:
+                st.success('Đối tượng thuộc phạm vi đã được học : airplanes', icon="✅")
                 st.write(xacsuat)
             else:
                 st.success('Đối tượng thuộc phạm vi đã được học : watch', icon="✅")
@@ -138,14 +138,6 @@ msp=st.sidebar.slider("",0.0,1.0)
 title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 30px;"> Upload ảnh </p>' 
 st.markdown(title_menu,unsafe_allow_html=True)
 uploaded_files1= st.file_uploader('',type=['jpg','png'])
-if(uploaded_files1 is None):
-            col1,col2=st.columns(2)
-            with col1:
-                st.image(load_image('known.jpg'))
-            with col2:
-                st.image(load_image('unknown.jpg'))
-img_known='known.jpg'
-img_unknown='unknown.jpg'
 Loss = importlib.import_module('Loss.ARPLoss')
 criterion = getattr(Loss, options['loss'])(**options)
 if(uploaded_files1 is not None):
