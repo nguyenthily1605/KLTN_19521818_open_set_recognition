@@ -90,7 +90,7 @@ def Minh_hoa(uploaded_files,threshold,model,choice_pp="MSP",type_model="VGG32"):
           x, y = model(data1, True)
         else: 
           x = model(data1)
-        logits=y
+        logits=x
         if choice_pp=="MSP":
             logits = torch.nn.Softmax(dim=-1)(logits)
             predictions_msp = logits.data.max(1)[1]
