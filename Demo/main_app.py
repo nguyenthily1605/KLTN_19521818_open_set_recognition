@@ -167,10 +167,10 @@ if(uploaded_files1 is not None):
     else:
                        #criterion = ARPLoss(options)
             criterion = criterion.cpu()
-            criterion.load_state_dict(torch.load('mobile_caltech_arp_model_criterion',map_location=torch.device('cpu')))
+            criterion.load_state_dict(torch.load('mobile_caltech_criterion_arpl',map_location=torch.device('cpu')))
             criterion.eval()
-            model=load_model(path_file_model='mobile_caltech_arp_model',flag=False)
-            Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,choice_pp=choice_pp)
+            model=load_model(path_file_model='mobile_caltech_model_arpl',flag=False)
+            Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,choice_pp=choice_pp,type_model="Mobilenetv3")
   
     
             
