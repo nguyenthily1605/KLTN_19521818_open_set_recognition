@@ -70,11 +70,11 @@ def sosanh(xacsuat,threshold,predictions):
   st.markdown(new_title, unsafe_allow_html=True)
   col1,col2=st.columns(2)
   if xacsuat>threshold:
-            if predictions.item()==2:
+            if predictions.item()==\0:
                 st.success('Đối tượng thuộc phạm vi đã được học :  leopards', icon="✅")
             elif predictions.item()==1:
                 st.success('Đối tượng thuộc phạm vi đã được học :  motorbikes', icon="✅")
-            elif predictions.item()==0:
+            elif predictions.item()==2:
                 st.success('Đối tượng thuộc phạm vi đã được học : airplanes', icon="✅")
                 st.write(xacsuat)
             else:
