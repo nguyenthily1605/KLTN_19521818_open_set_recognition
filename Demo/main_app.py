@@ -118,7 +118,7 @@ if "visibility" not in st.session_state:
     st.session_state.visibility = "visible"
     st.session_state.horizontal = True
 with st.sidebar:
-    title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 35px;"> 🏠 Mô hình</p>'
+    title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 35px;"> Mô hình</p>'
     st.markdown(title_menu,unsafe_allow_html=True)
     choice_mohinh=st.radio("",("   VGG32","    Mobilenetv3"),index=1)
     title_menu = '<p style="font-family:sans-serif; color:Black; font-size: 35px;"> Phương pháp </p>'
