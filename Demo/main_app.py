@@ -27,7 +27,7 @@ parser.add_argument('--loss', type=str, default='ARPLoss')
 parser.add_argument('--weight-pl', type=float, default=0.1, help="weight for center loss")
 parser.add_argument('--label_smoothing', type=float, default=None, help="Smoothing constant for label smoothing."
                                                                         "No smoothing if None or 0")
-parser.add_argument('--feat_dim', type=int, default=128, help="Feature vector dim, only for classifier32 at the moment")
+parser.add_argument('--feat_dim', type=int, default=576, help="Feature vector dim, only for classifier32 at the moment")
 
 args = parser.parse_args()
 options = vars(args)
@@ -50,7 +50,7 @@ test_transform = transforms.Compose([
 
 def load_model(path_file_model='',flag=True):
   if flag==True:
-    model=classifier32(num_classes=4)
+    model=classifier32(num_classes=4,feat_dim=576)
   else:
     model=mobilenetv3.mobilenet_v3_small(input=(32,32,3),num_classes=4)
   model = nn.DataParallel(model).cpu()
@@ -158,26 +158,26 @@ if(uploaded_files1 is not None):
   if choice_mohinh=='   VGG32': 
     if choice_pp=="MSP" or choice_pp=="MLS":
             vid_known=''
-            model=load_model(path_file_model='weights_cifar.pth')
+            model=load_model(path_file_model='vgg32_caltech_msp_model')
             Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,choice_pp=choice_pp)
     else:
                        #criterion = ARPLoss(options)
             criterion = criterion.cpu()
-            criterion.load_state_dict(torch.load('ARPL_loss.pth',map_location=torch.device('cpu')))
+            criterion.load_state_dict(torch.load('vgg32_caltech_arpl_criterion',map_location=torch.device('cpu')))
             criterion.eval()
-            model=load_model(path_file_model='ARPL.pth')
+            model=load_model(path_file_model='vgg32_caltech_arpl_model')
             Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,choice_pp=choice_pp)
   else:
     if choice_pp=="MSP" or choice_pp=="MLS":
             vid_known=''
-            model=load_model(path_file_model='mobilenetv3_msp',flag=False)
+            model=load_model(path_file_model='modilenetv3_caltech_msp_model',flag=False)
             Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,choice_pp=choice_pp,type_model="Mobilenetv3")
     else:
                        #criterion = ARPLoss(options)
             criterion = criterion.cpu()
-            criterion.load_state_dict(torch.load('ARPL_loss.pth',map_location=torch.device('cpu')))
+            criterion.load_state_dict(torch.load('mobile_caltech_arp_model_criterion',map_location=torch.device('cpu')))
             criterion.eval()
-            model=load_model(path_file_model='ARPL.pth',flag=False)
+            model=load_model(path_file_model='mobile_caltech_arp_model',flag=False)
             Minh_hoa(uploaded_files=uploaded_files1,threshold=msp,model=model,choice_pp=choice_pp)
   
     
