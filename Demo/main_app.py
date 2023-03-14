@@ -88,8 +88,10 @@ def Minh_hoa(uploaded_files,threshold,model,choice_pp="MSP",type_model="VGG32"):
         data1=data.unsqueeze(0)
         if type_model=="VGG32":
           x, y = model(data1, True)
+          logits_arp, _ = criterion(x, y)
         else: 
           y = model(data1)
+          logits_arp, _ = criterion(y, y)
         logits=y
         if choice_pp=="MSP":
             logits = torch.nn.Softmax(dim=-1)(logits)
@@ -107,7 +109,7 @@ def Minh_hoa(uploaded_files,threshold,model,choice_pp="MSP",type_model="VGG32"):
         #ARPL
         elif choice_pp=="ARPL":
  
-            logits_arp, _ = criterion(y, y)
+            
             logits_arp = torch.nn.Softmax(dim=-1)(logits_arp)
             predictions_arpl = logits_arp.data.max(1)[1]
             xacsuat_arpl=logits_arp.data.max(1)[0].item()
