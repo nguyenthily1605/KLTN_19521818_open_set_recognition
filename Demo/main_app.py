@@ -108,7 +108,7 @@ def Minh_hoa(uploaded_files,threshold,model,choice_pp="MSP",type_model="VGG32"):
         
         #ARPL
         elif choice_pp=="ARPL":
-           if type_model=="VGG32":
+          if type_model=="VGG32":
               logits_arp, _ = criterion(x, y)
           else: 
               logits_arp, _ = criterion(y, y)
