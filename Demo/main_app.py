@@ -101,17 +101,21 @@ def Minh_hoa(uploaded_files,threshold,model,choice_pp="MSP",type_model="VGG32"):
         
         #MLS
         elif choice_pp=="MLS":
-            logits_mls = torch.nn.Softmax(dim=-1)(logits_mls)  
+            logits_mls = torch.nn.Softmax(dim=-1)(logits)  
             predictions_mls = logits.data.max(1)[1]
             xacsuat_mls=logits.data.max(1)[0].item()
             sosanh(xacsuat_mls,threshold,predictions_mls)
         
         #ARPL
         elif choice_pp=="ARPL":
-            logits_arp = torch.nn.Softmax(dim=-1)(logits_arp)
-            predictions_arpl = logits_arp.data.max(1)[1]
-            xacsuat_arpl=logits_arp.data.max(1)[0].item()
-            sosanh(xacsuat_arpl,threshold,predictions_arpl)
+           if type_model=="VGG32":
+              logits_arp, _ = criterion(x, y)
+          else: 
+              logits_arp, _ = criterion(y, y)
+          logits_arp = torch.nn.Softmax(dim=-1)(logits_arp)
+          predictions_arpl = logits_arp.data.max(1)[1]
+          xacsuat_arpl=logits_arp.data.max(1)[0].item()
+          sosanh(xacsuat_arpl,threshold,predictions_arpl)
  
 new_title = '<p style="font-family:sans-serif; color:Red; font-size: 42px;">Sử dụng mạng học sâu cho nhận diện không gian mở</p>'
 st.markdown(new_title, unsafe_allow_html=True)
