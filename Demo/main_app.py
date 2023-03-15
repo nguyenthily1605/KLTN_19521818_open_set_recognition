@@ -76,7 +76,6 @@ def sosanh(xacsuat,threshold,predictions):
                 st.success('Đối tượng thuộc phạm vi đã được học :  motorbikes', icon="✅")
             elif predictions.item()==2:
                 st.success('Đối tượng thuộc phạm vi đã được học : airplanes', icon="✅")
-                st.write(xacsuat)
             else:
                 st.success('Đối tượng thuộc phạm vi đã được học : watch', icon="✅")
           
